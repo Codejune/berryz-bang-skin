@@ -1,0 +1,289 @@
+<!--
+===========================================================
+Codejune Testing Skin
+===========================================================
+-->
+<!-- HTML5 -->
+<!DOCTYPE html>
+<html lang="ko">
+<!-- Head -->
+<head>
+	<!-- Encoding -->
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<!-- Title -->
+	<title>Bang Cloud</title>
+	<!-- Favicon -->
+	<!--<link rel="icon" type="image/x-icon" id="page_favicon" href="/$skin/img/favicon.ico?action=SkinFile" />-->
+
+	<!-- CSS -->
+	<link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800&display=swap" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css?family=Prata&display=swap" rel="stylesheet">
+	<link rel="stylesheet" href="/$skin/assets/css/open-iconic-bootstrap.min.css?action=SkinFile">
+	<link rel="stylesheet" href="/$skin/assets/css/animate.css?action=SkinFile">
+	<link rel="stylesheet" href="/$skin/assets/css/owl.carousel.min.css?action=SkinFile">
+	<link rel="stylesheet" href="/$skin/assets/css/owl.theme.default.min.css?action=SkinFile">
+	<link rel="stylesheet" href="/$skin/assets/css/magnific-popup.css?action=SkinFile">
+	<link rel="stylesheet" href="/$skin/assets/css/aos.css?action=SkinFile">
+	<link rel="stylesheet" href="/$skin/assets/css/ionicons.min.css?action=SkinFile">
+	<link rel="stylesheet" href="/$skin/assets/css/bootstrap-datetimepicker.min.css?action=SkinFile">
+	<link rel="stylesheet" href="/$skin/assets/css/nouislider.css?action=SkinFile">
+	<link rel="stylesheet" href="/$skin/assets/css/flaticon.css?action=SkinFile">
+	<link rel="stylesheet" href="/$skin/assets/css/icomoon.css?action=SkinFile">
+	<link rel="stylesheet" href="/$skin/assets/css/style.css?action=SkinFile">
+</head>
+<!-- ============================================================================================================================================= -->
+<body>
+	<div class="main-section">
+		<!-- Nav -->
+		#if( $current_login_id )<!-- 승인 유저 -->
+		<nav class="navbar navbar-expand-lg navbar-light ftco_navbar bg-primary ftco-navbar-light" id="ftco-navbar">
+			<div class="container">
+				<a class="navbar-brand" href="/">Bang Cloud.</a>
+				<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExample03" aria-controls="navbarsExample03" aria-expanded="false" aria-label="Toggle navigation">
+					<span class="oi oi-menu"></span>
+				</button>
+
+				<div class="collapse navbar-collapse" id="navbarsExample03">
+					<ul class="navbar-nav ml-auto">
+						<li class="nav-item"><a class="nav-link icon d-flex align-items-center" onClick="window.open('/$skin/upload_frame.html?action=SkinFile#$upload_path*$skin','_blank','width=400,height=200,toolbar=no,status=no,resizable=no');"><i class="ion-ios-cloud-upload mr-2"></i> 업로드</a></li>
+						#if( $upload_path )
+						<div style="visibility:hidden">
+							<form method="GET" action="." name="MkdirForm">
+								<input type="hidden" name="action" value="MakeDirectory">
+								<input type="hidden" name="name">
+							</form>
+						</div>
+						#end
+						<li class="nav-item" onclick="OnPlugin('Delete');"><a href="javascript:void(0)" class="nav-link icon d-flex align-items-center"><i class="ion-md-trash mr-2"></i> 삭제</a></li>
+						<li class="nav-item" onclick="OnPlugin('Rename');"><a href="javascript:void(0)" class="nav-link icon d-flex align-items-center"><i class="ion-md-create mr-2"></i> 수정</a></li>
+						<li class="nav-item"><a href=".?action=Logout" class="nav-link icon d-flex align-items-center"><i class="ion-md-log-out mr-2"></i> 로그아웃</a></li>
+					</ul>
+				</div>
+			</div>
+		</nav>
+
+		#else <!-- 미승인 유저 -->
+		<nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
+			<div class="container">
+				<a class="navbar-brand" href="/">Bang Cloud.</a>
+				<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav" aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
+					<span class="oi oi-menu"></span>
+				</button>
+				<div class="collapse navbar-collapse" id="ftco-nav">
+					<ul class="navbar-nav ml-auto">
+						<li class="nav-item"><a href="//github.com/codejune" class="nav-link icon d-flex align-items-center"><i class="ion-logo-github"></i></a></li>
+						<li class="nav-item"><a href=".?action=Login" class="nav-link icon d-flex align-items-center"><i class="ion-md-log-out mr-2"></i> 로그인</a></li>
+					</ul>
+				</div>
+			</div>
+		</nav>
+		#end
+		<!-- END nav -->
+
+		#if( $current_login_id ) <!-- 승인 유저 -->
+		<!-- Table -->
+		<section class="ftco-section" id="checkRadios">
+			<div class="container">
+				#if( $content )
+				$content
+				#if( $content_hide_back_button )
+				#else
+				<p class="text-primary">해당 폴더에 접근 할 수 없습니다.<br> 로그인 확인 후 다시 접속 해 주세요.</p>
+				<a href='/' class="btn btn-primary">홈으로 이동</a>
+				#end
+				#end
+				#if( $show_files )
+				<form id="pluginForm" method="POST" action=""><input type="HIDDEN" name="selectedFiles" value=""></form>
+				<form id="fileListForm" style="margin:0; padding:0;">
+					<table class="table table-hover sortabletable">
+						<!-- 테이블 헤더 -->
+						<thead>
+							<tr>
+								<th scope="col" style="width: 1%">
+									<label class="custom-control fill-checkbox">
+										<input type="checkbox" class="fill-control-input" name="selectAllCheckbox" value="$link" onClick='ToggleSelectAll();' />
+										<span class="fill-control-indicator"></span>
+									</label>
+								</th>
+								<th scope="col" style="width: 5%">유형</th>
+								<th scope="col" style="width: 80%">이름</th>
+								<th scope="col" style="width: 15%">크기</th>
+							</tr>
+						</thead>
+						<!-- 테이블 데이터 -->
+						<tbody>
+							#if( $display_upper )
+											<td colspan="4">
+												<a href=".." class="btn btn-link">상위 디렉토리로 이동</a>
+											</td>
+										#else
+										#end
+							#foreach( $files )
+							<tr id="tr#$link">
+								<td>
+									<label class="custom-control fill-checkbox">
+										<input type="checkbox" class="fill-control-input" name="checkbox#$link" value="$link" onClick='HighlightRow("$link", this.checked)' />
+										<span class="fill-control-indicator"></span>
+									</label>
+								</td>
+								#if ( $is_folder )
+								<td>
+									<i class="ion-ios-folder">
+									</td>
+									<td>
+										<a class="btn btn-link" href="$link">$name</a>
+									</td>
+									<td>
+									</td>
+									#else
+									<td>
+										<i class="ion-ios-document">
+										</td>
+										<td>
+											<a class="btn btn-link" href="$link">$name</a>
+										</td>
+										<td>
+											<span id="cvtsize[]">$size</span>
+										</td>
+										#end
+									</tr>
+									#end
+
+									#if( $files )
+									#else
+									<tr><p class="text-primary" align="center">빈 폴더</p></tr>
+									#end
+								</tbody>
+							</table>
+						</form>
+						#end
+					</div>
+				</section>
+				#else<!-- 미승인 유저 -->
+				<section class="hero-wrap js-fullheight">
+					<div class="container">
+						<div class="row description js-fullheight align-items-center justify-content-center">
+							<div class="col-md-8 text-center">
+								<div class="text">
+									<h1>Bang Cloud.</h1>
+									<h4 class="mb-5">Berryz Webshare Devloping Skin.</h4>
+									<p><a href=".?action=Login" class="btn btn-white px-4 py-3"><i class="ion-md-log-in mr-2"></i>로그인</a></p>
+								</div>
+							</div>
+						</div>
+					</div>
+				</section>
+				<section class="ftco-section ftco-section-2 bg-primary" id="carousel">
+					<div class="container">
+						<div class="row justify-content-center">
+							<div class="col-md-5">
+								<h2 class="heading-section mb-4 pb-md-3">
+									간편하게 이용하는 클라우드 서비스
+								</h2>
+								<p>집에 소유하고 있는 데스크탑으로 간단한 웹 스토리지를 직접 구성할 수 있습니다.</p>
+								<p>본 서비스는 베리즈 웹쉐어 프로그램을 기반으로 하고 있습니다.</p>
+								<p><a href="#" class="btn btn-white">공식 홈페이지</a></p>
+							</div>
+							<div class="col-md-7">
+								<div id="demo" class="carousel slide" data-ride="carousel">
+
+									<!-- Indicators -->
+									<ul class="carousel-indicators">
+										<li data-target="#demo" data-slide-to="0" class="active"></li>
+										<li data-target="#demo" data-slide-to="1"></li>
+										<li data-target="#demo" data-slide-to="2"></li>
+									</ul>
+
+									<!-- The slideshow -->
+									<div class="carousel-inner">
+										<div class="carousel-item active">
+											<img src="$skin/assets/img/slider-1.jpg?action=SkinFile" alt="" class="img-fluid rounded">
+										</div>
+										<div class="carousel-item">
+											<img src="$skin/assets/img/slider-2.jpg?action=SkinFile" alt="" class="img-fluid rounded">
+										</div>
+										<div class="carousel-item">
+											<img src="$skin/assets/img/slider-3.jpg?action=SkinFile" alt="" class="img-fluid rounded">
+										</div>
+									</div>
+
+									<!-- Left and right controls -->
+									<a class="carousel-control-prev" href="#demo" data-slide="prev">
+										<span class="ion-ios-arrow-round-back"></span>
+									</a>
+									<a class="carousel-control-next" href="#demo" data-slide="next">
+										<span class="ion-ios-arrow-round-forward"></span>
+									</a>
+								</div>
+							</div>
+						</div>
+					</div>
+				</section>
+				<!-- - - - - -end- - - - -  -->
+				#end
+
+				<footer class="ftco-section ftco-section-2">
+					<div class="col-md-12 text-center">
+						<p class="mb-0">
+							<!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+							Copyright &copy;<script>
+							document.write(new Date().getFullYear());
+
+							</script> All rights reserved | This template is made with <i class="icon-heart" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
+							<!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+						</p>
+					</div>
+				</footer>
+			</div>
+		</section>
+		<!-- loader
+		<div id="ftco-loader" class="show fullscreen"><svg class="circular" width="48px" height="48px"><circle class="path-bg" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke="#eeeeee"/><circle class="path" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke-miterlimit="10" stroke="#F96D00"/></svg></div>
+	-->
+	<!-- Scripts -->
+	<script src="/$skin/assets/js/jquery-3.2.1.min.js?action=SkinFile"></script>
+	<script src="/$skin/assets/js/jquery-migrate-3.0.1.min.js?action=SkinFile"></script>
+	<script src="/$skin/assets/js/popper.min.js?action=SkinFile"></script>
+	<script src="/$skin/assets/js/bootstrap.min.js?action=SkinFile"></script>
+	<script src="/$skin/assets/js/jquery.easing.1.3.js?action=SkinFile"></script>
+	<script src="/$skin/assets/js/jquery.waypoints.min.js?action=SkinFile"></script>
+	<script src="/$skin/assets/js/jquery.stellar.min.js?action=SkinFile"></script>
+	<script src="/$skin/assets/js/owl.carousel.min.js?action=SkinFile"></script>
+	<script src="/$skin/assets/js/jquery.magnific-popup.min.js?action=SkinFile"></script>
+	<script src="/$skin/assets/js/aos.js?action=SkinFile"></script>
+	<script src="/$skin/assets/js/nouislider.min.js?action=SkinFile"></script>
+	<script src="/$skin/assets/js/moment-with-locales.min.js?action=SkinFile"></script>
+	<script src="/$skin/assets/js/bootstrap-datetimepicker.min.js?action=SkinFile"></script>
+	<script src="/$skin/assets/js/main.js?action=SkinFile"></script>
+	<script type="text/javascript" src="/$skin/assets/js/common.js?action=SkinFile"></script>
+	<script type="text/javascript" src="/$skin/assets/js/sortabletable.js?action=SkinFile"></script>
+	<script type="text/javascript">
+	//용량 단위 변환 JS - http://blog.naver.com/ddworld/30137189886
+	function byteConvertor(bytes) {
+		bytes = parseInt(bytes.replace(/,/gi, ''));
+		if (bytes > 0) {
+			var s = ['bytes', 'KB', 'MB', 'GB', 'TB', 'PB'];
+			var e = Math.floor(Math.log(bytes)/Math.log(1024));
+
+			if(e >= s.length) e = s.length - 1;//s의 마지막 단위로 표시할 수 없이 크다면, 마지막 단위로 처리
+
+			else if(e == "-Infinity") return "0 " + s[0];
+			else return (bytes/Math.pow(1024, Math.floor(e))).toFixed(2)+" "+s[e];
+		}
+		else {
+			return "0 bytes";
+		}
+	}
+	function onloadConvertor() {
+		var conobj = document.all['cvtsize[]'];
+		if (conobj.length > 1) {
+			for (var i=0; i<conobj.length; i++) {
+				conobj[i].innerHTML = byteConvertor(conobj[i].innerHTML);
+			}
+		}
+		else conobj.innerHTML = byteConvertor(conobj.innerHTML);
+	}
+	onloadConvertor();
+	</script>
+</body>
+</html>
