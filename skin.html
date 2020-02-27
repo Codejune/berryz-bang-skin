@@ -14,7 +14,7 @@ Codejune Testing Skin
 	<!-- Title -->
 	<title>Bang Cloud</title>
 	<!-- Favicon -->
-	<!--<link rel="icon" type="image/x-icon" id="page_favicon" href="/$skin/img/favicon.ico?action=SkinFile" />-->
+	<link rel="icon" type="image/x-icon" id="page_favicon" href="/$skin/assets/img/favicon.ico?action=SkinFile" />
 
 	<!-- CSS -->
 	<link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800&display=swap" rel="stylesheet">
@@ -39,7 +39,7 @@ Codejune Testing Skin
 		#if( $current_login_id )<!-- 승인 유저 -->
 		<nav class="navbar navbar-expand-lg navbar-light ftco_navbar bg-primary ftco-navbar-light" id="ftco-navbar">
 			<div class="container">
-				<a class="navbar-brand" href="/">Bang Cloud.</a>
+				<a class="navbar-brand" href="/"><i class="ion-ios-cloud mr-1 navbar-brand"></i>Bang Cloud.</a>
 				<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExample03" aria-controls="navbarsExample03" aria-expanded="false" aria-label="Toggle navigation">
 					<span class="oi oi-menu"></span>
 				</button>
@@ -55,9 +55,33 @@ Codejune Testing Skin
 							</form>
 						</div>
 						#end
-						<li class="nav-item" onclick="OnPlugin('Delete');"><a href="javascript:void(0)" class="nav-link icon d-flex align-items-center"><i class="ion-md-trash mr-2"></i> 삭제</a></li>
-						<li class="nav-item" onclick="OnPlugin('Rename');"><a href="javascript:void(0)" class="nav-link icon d-flex align-items-center"><i class="ion-md-create mr-2"></i> 수정</a></li>
-						<li class="nav-item"><a href=".?action=Logout" class="nav-link icon d-flex align-items-center"><i class="ion-md-log-out mr-2"></i> 로그아웃</a></li>
+						<li class="nav-item" onclick="OnPlugin('Delete')"><a href="javascript:void(0)" class="nav-link icon d-flex align-items-center"><i class="ion-md-trash mr-2"></i> 삭제</a></li>
+						<li class="nav-item" onclick="OnPlugin('Rename')"><a href="javascript:void(0)" class="nav-link icon d-flex align-items-center"><i class="ion-md-create mr-2"></i> 수정</a></li>
+						<li class="dropdown nav-item d-flex">
+							<a href="#" class="dropdown-toggle nav-link icon d-flex align-items-center" data-toggle="dropdown">
+								<i class="ion-ios-settings mr-2"></i>기능<b class="caret"></b>
+							</a>
+							<div class="dropdown-menu dropdown-menu-right">
+								<h6 class="dropdown-header">디렉토리</h6>
+								<a href="javascript:void(0)" onclick="onMkdir()"; class="dropdown-item">생성</a>
+								<div class="dropdown-divider"></div>
+								<h6 class="dropdown-header">다운로드</h6>
+								<a href="javascript:void(0)" onclick="OnPlugin('ZIPDownload')"; class="dropdown-item">ZIP</a>
+								<a href="javascript:void(0)" onclick="OnPlugin('RARDownload')"; class="dropdown-item">RAR</a>
+								<div class="dropdown-divider"></div>
+								<h6 class="dropdown-header">스트리밍</h6>
+								<a href="javascript:void(0)" onclick="OnPlugin('Playlist.asx')"; class="dropdown-item">ASX</a>
+							</div>
+						</li>
+
+						<li class="dropdown nav-item d-flex">
+							<a href="#" class="dropdown-toggle nav-link icon d-flex align-items-center" data-toggle="dropdown">
+								<i class="ion-ios-contact mr-2"></i>$current_login_id<b class="caret"></b>
+							</a>
+							<div class="dropdown-menu dropdown-menu-right">
+								<a href='.?action=Logout' class="dropdown-item"><i class="ion-md-log-out mr-2"></i>로그아웃</a>
+							</div>
+						</li>
 					</ul>
 				</div>
 			</div>
@@ -66,13 +90,13 @@ Codejune Testing Skin
 		#else <!-- 미승인 유저 -->
 		<nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
 			<div class="container">
-				<a class="navbar-brand" href="/">Bang Cloud.</a>
+				<a class="navbar-brand" href="/"><i class="ion-ios-cloud mr-1 navbar-brand"></i>Bang Cloud.</a>
 				<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav" aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
 					<span class="oi oi-menu"></span>
 				</button>
 				<div class="collapse navbar-collapse" id="ftco-nav">
 					<ul class="navbar-nav ml-auto">
-						<li class="nav-item"><a href="//github.com/codejune" class="nav-link icon d-flex align-items-center"><i class="ion-logo-github"></i></a></li>
+						<li class="nav-item"><a href="//github.com/codejune" class="nav-link icon d-flex align-items-center"><i class="ion-logo-github mr-2"></i> Github</a></li>
 						<li class="nav-item"><a href=".?action=Login" class="nav-link icon d-flex align-items-center"><i class="ion-md-log-out mr-2"></i> 로그인</a></li>
 					</ul>
 				</div>
@@ -83,7 +107,7 @@ Codejune Testing Skin
 
 		#if( $current_login_id ) <!-- 승인 유저 -->
 		<!-- Table -->
-		<section class="ftco-section" id="checkRadios">
+		<section class="ftco-section">
 			<div class="container">
 				#if( $content )
 				$content
@@ -94,6 +118,7 @@ Codejune Testing Skin
 				#end
 				#end
 				#if( $show_files )
+				<h4 class="heading-section" style="font-weight: bold;">$address</h4>
 				<form id="pluginForm" method="POST" action=""><input type="HIDDEN" name="selectedFiles" value=""></form>
 				<form id="fileListForm" style="margin:0; padding:0;">
 					<table class="table table-hover sortabletable">
@@ -106,19 +131,21 @@ Codejune Testing Skin
 										<span class="fill-control-indicator"></span>
 									</label>
 								</th>
-								<th scope="col" style="width: 5%">유형</th>
-								<th scope="col" style="width: 80%">이름</th>
-								<th scope="col" style="width: 15%">크기</th>
+								<th nowrap scope="col" style="width: 5%">유형</th>
+								<th scope="col" style="text-align:left; padding-left: 25px; width: 80%">이름</th>
+								<th nowrap scope="col" style="width: 15%">크기</th>
 							</tr>
 						</thead>
 						<!-- 테이블 데이터 -->
 						<tbody>
 							#if( $display_upper )
-											<td colspan="4">
-												<a href=".." class="btn btn-link">상위 디렉토리로 이동</a>
-											</td>
-										#else
-										#end
+							<tr>
+								<td colspan="4">
+									<i class="icon ion-md-arrow-round-up"></i><a href=".." class="btn btn-link">이전 디렉토리 이동</a>
+								</td>
+							</tr>
+							#else
+							#end
 							#foreach( $files )
 							<tr id="tr#$link">
 								<td>
@@ -129,10 +156,10 @@ Codejune Testing Skin
 								</td>
 								#if ( $is_folder )
 								<td>
-									<i class="ion-ios-folder">
+									<i class="ion-ios-folder" style="color: #F6BB60">
 									</td>
-									<td>
-										<a class="btn btn-link" href="$link">$name</a>
+									<td style="text-align:left">
+										<a class="btn btn-dark btn-link" role="button" href="$link">$name</a>
 									</td>
 									<td>
 									</td>
@@ -140,19 +167,14 @@ Codejune Testing Skin
 									<td>
 										<i class="ion-ios-document">
 										</td>
-										<td>
-											<a class="btn btn-link" href="$link">$name</a>
+										<td style="text-align:left">
+											<a class="btn btn-dark btn-link" role="button" href="$link">$name</a>
 										</td>
 										<td>
 											<span id="cvtsize[]">$size</span>
 										</td>
 										#end
 									</tr>
-									#end
-
-									#if( $files )
-									#else
-									<tr><p class="text-primary" align="center">빈 폴더</p></tr>
 									#end
 								</tbody>
 							</table>
@@ -179,9 +201,9 @@ Codejune Testing Skin
 						<div class="row justify-content-center">
 							<div class="col-md-5">
 								<h2 class="heading-section mb-4 pb-md-3">
-									간편하게 이용하는 클라우드 서비스
+									대용량 파일을 한번에
 								</h2>
-								<p>집에 소유하고 있는 데스크탑으로 간단한 웹 스토리지를 직접 구성할 수 있습니다.</p>
+								<p>집에 소유하고 있는 데스크탑으로 간단한 웹 스토리지를 직접 구성하여 파일을 공유하십시오.</p>
 								<p>본 서비스는 베리즈 웹쉐어 프로그램을 기반으로 하고 있습니다.</p>
 								<p><a href="#" class="btn btn-white">공식 홈페이지</a></p>
 							</div>
@@ -228,7 +250,7 @@ Codejune Testing Skin
 						<p class="mb-0">
 							<!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
 							Copyright &copy;<script>
-							document.write(new Date().getFullYear());
+								document.write(new Date().getFullYear());
 
 							</script> All rights reserved | This template is made with <i class="icon-heart" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
 							<!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
@@ -258,32 +280,32 @@ Codejune Testing Skin
 	<script type="text/javascript" src="/$skin/assets/js/common.js?action=SkinFile"></script>
 	<script type="text/javascript" src="/$skin/assets/js/sortabletable.js?action=SkinFile"></script>
 	<script type="text/javascript">
-	//용량 단위 변환 JS - http://blog.naver.com/ddworld/30137189886
-	function byteConvertor(bytes) {
-		bytes = parseInt(bytes.replace(/,/gi, ''));
-		if (bytes > 0) {
-			var s = ['bytes', 'KB', 'MB', 'GB', 'TB', 'PB'];
-			var e = Math.floor(Math.log(bytes)/Math.log(1024));
+		//용량 단위 변환 JS - http://blog.naver.com/ddworld/30137189886
+		function byteConvertor(bytes) {
+			bytes = parseInt(bytes.replace(/,/gi, ''));
+			if (bytes > 0) {
+				var s = ['bytes', 'KB', 'MB', 'GB', 'TB', 'PB'];
+				var e = Math.floor(Math.log(bytes)/Math.log(1024));
 
-			if(e >= s.length) e = s.length - 1;//s의 마지막 단위로 표시할 수 없이 크다면, 마지막 단위로 처리
+				if(e >= s.length) e = s.length - 1;//s의 마지막 단위로 표시할 수 없이 크다면, 마지막 단위로 처리
 
-			else if(e == "-Infinity") return "0 " + s[0];
-			else return (bytes/Math.pow(1024, Math.floor(e))).toFixed(2)+" "+s[e];
-		}
-		else {
-			return "0 bytes";
-		}
-	}
-	function onloadConvertor() {
-		var conobj = document.all['cvtsize[]'];
-		if (conobj.length > 1) {
-			for (var i=0; i<conobj.length; i++) {
-				conobj[i].innerHTML = byteConvertor(conobj[i].innerHTML);
+				else if(e == "-Infinity") return "0 " + s[0];
+				else return (bytes/Math.pow(1024, Math.floor(e))).toFixed(2)+" "+s[e];
+			}
+			else {
+				return "0 bytes";
 			}
 		}
-		else conobj.innerHTML = byteConvertor(conobj.innerHTML);
-	}
-	onloadConvertor();
+		function onloadConvertor() {
+			var conobj = document.all['cvtsize[]'];
+			if (conobj.length > 1) {
+				for (var i=0; i<conobj.length; i++) {
+					conobj[i].innerHTML = byteConvertor(conobj[i].innerHTML);
+				}
+			}
+			else conobj.innerHTML = byteConvertor(conobj.innerHTML);
+		}
+		onloadConvertor();
 	</script>
 </body>
 </html>

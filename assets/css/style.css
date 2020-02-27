@@ -3536,7 +3536,7 @@ input[type="button"].btn-block {
       -webkit-box-orient: horizontal;
       -webkit-box-direction: normal;
       -ms-flex-direction: row;
-      flex-direction: row; }
+      flex-direction: row;}
       .navbar-expand-sm .navbar-nav .dropdown-menu {
         position: absolute; }
       .navbar-expand-sm .navbar-nav .nav-link {
@@ -8564,7 +8564,8 @@ h1, h2, h3, h4, h5,
   padding-bottom: .5rem; }
   .navbar .navbar-brand {
     font-weight: 300;
-    font-size: 20px; }
+    font-size: 20px;
+    font-weight: bold;}
   .navbar.bg-primary {
     background: #3e64ff !important; }
   .navbar.bg-primary .navbar-brand, .navbar.bg-success .navbar-brand, .navbar.bg-warning .navbar-brand, .navbar.bg-secondary .navbar-brand, .navbar.bg-info .navbar-brand, .navbar.bg-danger .navbar-brand, .navbar.bg-dark .navbar-brand, .navbar.bg-transparent .navbar-brand {
